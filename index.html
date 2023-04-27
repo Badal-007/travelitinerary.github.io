@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Travel Itinerary Generator</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+</head>
+</head>
+    <body>
+    <form id="travelForm">
+      <label for="destination">Destination:</label>
+      <input type="text" id="destination" name="destination" required /><br />
+      <button type="submit">Generate Itinerary</button>
+    </form>
+
+    <div id="itinerary"></div>
+
+    <script>
+      const form = document.getElementById("travelForm");
+      const itinerary = document.getElementById("itinerary");
+
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const destination = document.getElementById("destination").value;
+        const url = `https://api.openai.com/v1/engines/davinci-codex/completions?prompt=I%20am%20planning%20a%20${numDays}-day%20trip%20to%20${destination}%20with%20a%20budget%20of%20${budget}%20dollars.%20Here%20is%20my%20itinerary:%0A%0ADay%201:%0A%0A%0ADay%202:%0A%0A%0ADay%203:%0A%0A%0ADay%204:%0A%0A%0ADay%205:%0A%0A%0ADay%206:%0A%0A%0ADay%207:%0A%0A%0A&temperature=0.7&max_tokens=1024&top_p=1&frequency_penalty=0.5&presence_penalty=0.5&stop=%0A`;
+
+        axios({
+          method: "post",
+          url: url,
+          headers: {
+            Authorization: "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",
+            "Content-Type": "application/json",
+          },
+        })
+          .then((res) => {
+            const itineraryText = res.data.choices[0].text;
+            itinerary.innerHTML = `<h2>Itinerary:</h2>${itineraryText}`;
+          })
+          .catch((err) => console.log(err));
+      });
+    </script>
+  </body>
+</html>
